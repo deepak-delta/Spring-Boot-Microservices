@@ -11,6 +11,7 @@ import com.example.microservices.beans.Student;
 import com.example.microservices.controllers.SendResponse;
 import com.example.microservices.repositories.StudentRepository;
 
+
 import java.util.*;
 
 
@@ -26,33 +27,150 @@ public class StudentService {
 		return studentRepository.findAll();
 	}
 	
-	public List<Student> sortStudents(String type,String gender)
+	
+	public Student addStudent(Student student)
+	{
+		student.setId(getMaxId());
+		int totalTemp = student.getSubjectOne()+student.getSubjectTwo()+student.getSubjectThree();
+		student.setTotal(totalTemp);
+		studentRepository.save(student);
+		return student;
+		
+	}
+	
+	
+	
+	public List<Student> sortStudents(String sortBy,String sortType,String gender)
 	{
 		List<Student> students2 = new ArrayList<>();
 		
-		switch (type) {
+		switch (sortType) {
 		case "asc": {
-			List<Student> students = studentRepository.findAll(Sort.by("name"));
-			for (Student student : students) 
-			{
-				if(student.getGender().equalsIgnoreCase(gender))
-					students2.add(student);	
-			}
-			return students2;	
-		}
-		case "des": {
+			switch (sortBy) {
+			case "name": {
+				List<Student> students = studentRepository.findAll(Sort.by("name"));
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
 			
-			List<Student> students = studentRepository.findAll(Sort.by("name").descending());
-			for (Student student : students) 
-			{
-				if(student.getGender().equalsIgnoreCase(gender))
-					students2.add(student);	
 			}
-			return students2;
+			
+			case "subjectOne": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectOne"));
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "subjectTwo": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectTwo"));
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "subjectThree": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectThree"));
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "total": {
+				List<Student> students = studentRepository.findAll(Sort.by("total"));
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + sortBy);
+			}
+			
 		}
+		case "dec": {
+			switch (sortBy) {
+			case "name": {
+				List<Student> students = studentRepository.findAll(Sort.by("name").descending());
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			}
+			case "subjectOne": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectOne").descending());
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "subjectTwo": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectTwo").descending());
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "subjectThree": {
+				List<Student> students = studentRepository.findAll(Sort.by("subjectThree").descending());
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			case "total": {
+				List<Student> students = studentRepository.findAll(Sort.by("total").descending());
+				for (Student student : students) 
+				{
+					if(student.getGender().equalsIgnoreCase(gender))
+						students2.add(student);	
+				}
+				return students2;	
+			
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + sortBy);
+			}
+			
+		}
+		
 		default:
-			throw new IllegalArgumentException("Unexpected value: " + type);
-		}	
+			throw new IllegalArgumentException("Unexpected value: " + sortType);
+		}
+		
+
+
+		
+	
+		
+		
+		
 		
 		
 		
@@ -92,13 +210,7 @@ public class StudentService {
 		return studentData;
 	}
 	
-	public Student addStudent(Student student)
-	{
-		student.setId(getMaxId());
-		studentRepository.save(student);
-		return student;
-		
-	}
+	
 	
 	
 	public int getMaxId()
@@ -121,7 +233,12 @@ public class StudentService {
 		response.setMsg("Student details deleted");
 		response.setId(id);
 		return response;
+		
+		
 	}	
+	
+	
+	
 }
 
 

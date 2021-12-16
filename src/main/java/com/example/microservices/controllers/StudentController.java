@@ -23,11 +23,23 @@ public class StudentController {
 	@Autowired
 	StudentService studentService;
 	
+	
+	
+	
 	@GetMapping("/api/students")
 	public List<Student> getAllStudents()
 	{
 		return studentService.getAllStudents();
 	}
+	
+	
+	@PostMapping("/api/addstudent")
+	public Student addStudent(@RequestBody Student student)
+	{
+		return studentService.addStudent(student);
+	}
+	
+	
 	
 	@GetMapping("/api/students/{id}")
 	public ResponseEntity<Student> getStudentById(@PathVariable(value = "id")int id)
@@ -62,11 +74,7 @@ public class StudentController {
 		}
 	}
 	
-	@PostMapping("/api/addstudent")
-	public Student addStudent(@RequestBody Student student)
-	{
-		return studentService.addStudent(student);
-	}
+	
 	
 	@PutMapping("/api/students/edit/{id}")
 	public ResponseEntity<Student> editStudent(@PathVariable(value = "id")int id ,@RequestBody Student student)
@@ -95,9 +103,9 @@ public class StudentController {
 	
 	
 	@GetMapping("/api/students/sortandfilter")
-	public List<Student> sortStudents(@RequestParam(value = "type")String type,@RequestParam(value = "gender")String gender)
+	public List<Student> sortStudents(@RequestParam(value = "sortBy")String sortBy,@RequestParam(value = "sortType")String sortType,@RequestParam(value = "gender")String gender)
 	{
-		return studentService.sortStudents(type,gender);
+		return studentService.sortStudents(sortBy,sortType,gender);
 	}
 	
 
